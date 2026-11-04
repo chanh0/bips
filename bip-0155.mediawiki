@@ -2,13 +2,12 @@
   BIP: 155
   Layer: Peer Services
   Title: addrv2 message
-  Author: Wladimir J. van der Laan <laanwj@gmail.com>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0155
-  Status: Draft
-  Type: Standards Track
-  Created: 2019-02-27
+  Authors: Wladimir J. van der Laan <laanwj@gmail.com>
+  Status: Deployed
+  Type: Specification
+  Assigned: 2019-02-27
   License: BSD-2-Clause
+  Version: 2.1.1
 </pre>
 
 ==Introduction==
@@ -26,7 +25,7 @@ This BIP is licensed under the 2-clause BSD license.
 ===Motivation===
 
 Tor v3 hidden services are part of the stable release of Tor since version 0.3.2.9. They have
-various advantages compared to the old hidden services, among which better encryption and privacy
+various advantages compared to the old hidden services, among which are better encryption and privacy
 <ref>[https://gitweb.torproject.org/torspec.git/tree/rend-spec-v3.txt Tor Rendezvous Specification - Version 3]</ref>.
 These services have 256 bit addresses and thus do not fit in the existing <code>addr</code> message, which encapsulates onion addresses in OnionCat IPv6 addresses.
 
@@ -44,7 +43,7 @@ interpreted as described in RFC 2119<ref>[https://tools.ietf.org/html/rfc2119 RF
 
 The <code>addrv2</code> message is defined as a message where <code>pchCommand == "addrv2"</code>.
 It is serialized in the standard encoding for P2P messages.
-Its format is similar to the current <code>addr</code> message format, with the difference that the 
+Its format is similar to the current <code>addr</code> message format, with the difference that the
 fixed 16-byte IP address is replaced by a network ID and a variable-length address, and the services format has been changed to [https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer CompactSize].
 
 This means that the message contains a serialized <code>std::vector</code> of the following structure:
@@ -101,7 +100,7 @@ The list of reserved network IDs is as follows:
 | <code>0x03</code>
 | <code>TORV2</code>
 | 10
-| Tor v2 hidden service address
+| Tor v2 hidden service address (no longer used<ref name="torv2">Tor v2 is no longer operational; clients MUST NOT gossip or relay Tor v2 addresses and MUST ignore them on receive</ref>)
 |-
 | <code>0x04</code>
 | <code>TORV3</code>
@@ -117,6 +116,11 @@ The list of reserved network IDs is as follows:
 | <code>CJDNS</code>
 | 16
 | Cjdns overlay network address
+|-
+| <code>0x07</code>
+| <code>YGGDRASIL</code>
+| 16
+| Yggdrasil overlay network address
 |}
 
 Clients are RECOMMENDED to gossip addresses from all known networks even if they are currently not connected to some of them. That could help multi-homed nodes and make it more difficult for an observer to tell which networks a node is connected to.
@@ -126,6 +130,8 @@ Clients SHOULD NOT gossip addresses from unknown networks because they have no m
 Further network ID numbers MUST be reserved in a new BIP document.
 
 Clients SHOULD reject messages that contain addresses that have a different length than specified in this table for a specific network ID, as these are meaningless.
+
+Some ranges of the <code>IPV6</code> address space are reserved for embedding addresses of other networks (for example the IPv4-in-IPv6 range <code>::ffff:0:0/96</code>). Such addresses already have a canonical encoding under their own network ID and MUST NOT be sent with the <code>IPV6</code> network ID. Clients SHOULD ignore <code>IPV6</code> addresses that fall into these reserved ranges on receive, since the same address received under two network IDs would otherwise be treated as two distinct peers.
 
 See the appendices for the address encodings to be used for the various networks.
 
@@ -139,7 +145,10 @@ For older peers, that did not emit <code>sendaddrv2</code>, keep sending the leg
 
 ==Reference implementation==
 
-The reference implementation is available at (to be done)
+Original reference implementation in Bitcoin Core:
+* https://github.com/bitcoin/bitcoin/issues/18884
+* https://github.com/bitcoin/bitcoin/pull/19954
+* https://github.com/bitcoin/bitcoin/pull/20119
 
 ==Acknowledgements==
 
@@ -147,7 +156,7 @@ The reference implementation is available at (to be done)
 
 - Gregory Maxwell: various suggestions regarding extensibility
 
-==Appendix A: Tor v2 address encoding==
+==Appendix A: Tor v2 address encoding (no longer used <ref name="torv2" />)==
 
 The new message introduces a separate network ID for <code>TORV2</code>.
 
@@ -183,6 +192,21 @@ I2P addresses MUST be sent with the <code>I2P</code> network ID, with the decode
 ==Appendix D: Cjdns address encoding==
 
 Cjdns addresses are simply IPv6 addresses in the <code>fc00::/8</code> range<ref>[https://github.com/cjdelisle/cjdns/blob/6e46fa41f5647d6b414612d9d63626b0b952746b/doc/Whitepaper.md#pulling-it-all-together Cjdns whitepaper: Pulling It All Together]</ref>. They MUST be sent with the <code>CJDNS</code> network ID.
+
+==Appendix E: Yggdrasil address encoding==
+
+Yggdrasil addresses are simply IPv6 addresses in the <code>0200::/7</code> range<ref>[https://yggdrasil-network.github.io/faq.html#will-yggdrasil-conflict-with-my-network-routing Yggdrasil FAQ]</ref>. They MUST be sent with the <code>YGGDRASIL</code> network ID.
+
+== Changelog ==
+
+* 2.1.1 (2026-08-08):
+** Add links to reference implementation.
+* 2.1.0 (2026-08-03):
+** Document that IPv4-in-IPv6 range MUST NOT be sent with the IPV6 network ID and SHOULD be ignored on receive.
+* 2.0.0 (2025-10-01):
+** Add note that Tor v2 is no longer operational.
+* 1.0.0 (2019-02-27):
+** Initial version
 
 ==References==
 

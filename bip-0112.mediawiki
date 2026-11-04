@@ -2,14 +2,12 @@
   BIP: 112
   Layer: Consensus (soft fork)
   Title: CHECKSEQUENCEVERIFY
-  Author: BtcDrak <btcdrak@gmail.com>
-          Mark Friedenbach <mark@friedenbach.org>
-          Eric Lombrozo <elombrozo@gmail.com>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0112
-  Status: Final
-  Type: Standards Track
-  Created: 2015-08-10
+  Authors: BtcDrak <btcdrak@gmail.com>
+           Mark Friedenbach <mark@friedenbach.org>
+           Eric Lombrozo <elombrozo@gmail.com>
+  Status: Deployed
+  Type: Specification
+  Assigned: 2015-08-10
   License: PD
 </pre>
 
@@ -36,7 +34,7 @@ When executed, if any of the following conditions are true, the script interpret
 
 Otherwise, script execution will continue as if a NOP had been executed.
 
-BIP 68 prevents a non-final transaction from being selected for inclusion in a block until the corresponding input has reached the specified age, as measured in block-height or block-time. By comparing the argument to CHECKSEQUENCEVERIFY against the nSequence field, we indirectly verify a desired minimum age of the
+BIP 68 prevents a non-final transaction from being selected for inclusion in a block until the corresponding input has reached the specified age, as measured in block-height or block-time. By comparing the argument to CHECKSEQUENCEVERIFY against the nSequence field, we indirectly verify a desired minimum age of
 the output being spent; until that relative age has been reached any script execution pathway including the CHECKSEQUENCEVERIFY will fail to validate, causing the transaction not to be selected for inclusion in a block.
 
 
@@ -69,13 +67,13 @@ address with the following redeemscript.
         <Alice's pubkey> CHECKSIG
     ENDIF
 
-At any time funds can be spent using signatures from any two of Alice, 
+At any time funds can be spent using signatures from any two of Alice,
 Bob or the Escrow.
 
 After 30 days Alice can sign alone.
 
 The clock does not start ticking until the payment to the escrow address
-confirms. 
+confirms.
 
 
 ===Retroactive Invalidation===
@@ -214,7 +212,7 @@ final branch of above to ensure Bob cannot spend the output until after both
 the timeout is complete and Alice has had time to reveal the revocation
 secret.
 
-See the [https://github.com/ElementsProject/lightning/blob/master/doc/deployable-lightning.pdf Deployable Lightning] paper.
+See the [https://github.com/ElementsProject/lightning/blob/master/doc/miscellaneous/deployable-lightning.pdf Deployable Lightning] paper.
 
 
 ====2-Way Pegged Sidechains====
@@ -230,7 +228,7 @@ The 2-way pegged sidechain requires a new REORGPROOFVERIFY opcode, the semantics
 
 ==Specification==
 
-Refer to the reference implementation, reproduced below, for the precise 
+Refer to the reference implementation, reproduced below, for the precise
 semantics and detailed rationale for those semantics.
 
 <pre>
@@ -247,7 +245,7 @@ static const uint32_t SEQUENCE_LOCKTIME_TYPE_FLAG = (1 << 22);
 /* If CTxIn::nSequence encodes a relative lock-time, this mask is
  * applied to extract that lock-time from the sequence field. */
 static const uint32_t SEQUENCE_LOCKTIME_MASK = 0x0000ffff;
-   
+
 case OP_NOP3:
 {
     if (!(flags & SCRIPT_VERIFY_CHECKSEQUENCEVERIFY)) {
@@ -290,7 +288,7 @@ case OP_NOP3:
 
     break;
 }
-    
+
 bool TransactionSignatureChecker::CheckSequence(const CScriptNum& nSequence) const
 {
     // Relative lock times are supported by comparing the passed
@@ -382,7 +380,7 @@ Thanks to Eric Lombrozo and Anthony Towns for contributing example use cases.
 
 [http://lightning.network/lightning-network-paper.pdf Lightning Network]
 
-[https://github.com/ElementsProject/lightning/blob/master/doc/deployable-lightning.pdf Deployable Lightning]
+[https://github.com/ElementsProject/lightning/blob/master/doc/miscellaneous/deployable-lightning.pdf Deployable Lightning]
 
 [http://diyhpl.us/diyhpluswiki/transcripts/sf-bitcoin-meetup/2015-02-23-scaling-bitcoin-to-billions-of-transactions-per-day/ Scaling Bitcoin to Billions of Transactions Per Day]
 

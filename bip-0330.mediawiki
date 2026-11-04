@@ -2,13 +2,11 @@
   BIP: 330
   Layer: Peer Services
   Title: Transaction announcements reconciliation
-  Author: Gleb Naumenko <naumenko.gs@gmail.com>
-          Pieter Wuille <pieter.wuille@gmail.com>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0330
+  Authors: Gleb Naumenko <naumenko.gs@gmail.com>
+           Pieter Wuille <pieter.wuille@gmail.com>
   Status: Draft
-  Type: Standards Track
-  Created: 2019-09-25
+  Type: Specification
+  Assigned: 2019-09-25
   License: CC0-1.0
   License-Code: MIT
 </pre>
@@ -210,7 +208,7 @@ The reconcildiff message is used by reconciliation initiator to announce transac
 | uint32[] || ask_shortids || The short IDs that the sender did not have.
 |}
 
-Upon receipt a "reconcildiff" message with ''success=1'' (reconciliation success), a node sends an "inv" message for the transactions requested by 32-bit IDs (first vector) containing their wtxids (with parent transactions occuring before their dependencies).
+Upon receipt a "reconcildiff" message with ''success=1'' (reconciliation success), a node sends an "inv" message for the transactions requested by 32-bit IDs (first vector) containing their wtxids (with parent transactions occurring before their dependencies).
 If ''success=0'' (reconciliation failure), receiver should announce all transactions from the reconciliation set via an "inv" message.
 In both cases, transactions the sender of the message thinks the receiver is missing are announced via an "inv" message.
 The regular "inv" deduplication should apply.

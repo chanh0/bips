@@ -2,15 +2,16 @@
   BIP: 173
   Layer: Applications
   Title: Base32 address format for native v0-16 witness outputs
-  Author: Pieter Wuille <pieter.wuille@gmail.com>
-          Greg Maxwell <greg@xiph.org>
+  Authors: Pieter Wuille <pieter.wuille@gmail.com>
+           Greg Maxwell <greg@xiph.org>
   Comments-Summary: No comments yet.
   Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0173
-  Status: Final
+  Status: Deployed
   Type: Informational
-  Created: 2017-03-20
+  Assigned: 2017-03-20
   License: BSD-2-Clause
   Replaces: 142
+  Proposed-Replacement: 350
 </pre>
 
 ==Introduction==
@@ -403,3 +404,12 @@ separator).
 This document is inspired by the [https://rusty.ozlabs.org/?p=578 address proposal] by Rusty Russell, the
 [https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2014-February/004402.html base32] proposal by Mark Friedenbach, and had input from Luke Dashjr,
 Johnson Lau, Eric Lombrozo, Peter Todd, and various other reviewers.
+
+==Disclosures (added 2024)==
+
+Due to an oversight in the design of bech32, this checksum scheme is not always
+robust against
+[[https://gist.github.com/sipa/a9845b37c1b298a7301c33a04090b2eb|the insertion
+and deletion of fewer than 5 consecutive characters]]. Due to this weakness,
+[[bip-0350.mediawiki|BIP-350]] proposes using the scheme described in this BIP
+only for Native Segwit v0 outputs.

@@ -2,12 +2,12 @@
   BIP: 152
   Layer: Peer Services
   Title: Compact Block Relay
-  Author: Matt Corallo <bip152@bluematt.me>
+  Authors: Matt Corallo <bip152@bluematt.me>
   Comments-Summary: Unanimously Recommended for implementation
   Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0152
-  Status: Final
-  Type: Standards Track
-  Created: 2016-04-27
+  Status: Deployed
+  Type: Specification
+  Assigned: 2016-04-27
   License: PD
 </pre>
 
@@ -30,7 +30,7 @@ While the goal of this work is explicitly not to reduce block transfer latency, 
 ===Intended Protocol Flow===
 <img src=bip-0152/protocol-flow.png></img>
 
-The protocol is intended to be used in two ways, depending on the peers and bandwidth available, as discussed [[#Implementation_Notes|later]]. The "high-bandwidth" mode, which nodes may only enable for a few of their peers, is enabled by setting the first boolean to 1 in a <code>sendcmpct</code> message. In this mode, peers send new block announcements with the short transaction IDs already (via a <code>cmpctblock</code> message), possibly even before fully validating the block (as indicated by the grey box in the image above). In some cases no further round-trip is needed, and the receiver can reconstruct the block and process it as usual immediately. When some transactions were not available from local sources (ie mempool), a <code>getblocktxn</code>/<code>blocktxn</code> roundtrip is necessary, bringing the best-case latency to the same 1.5*RTT minimum time that nodes take today, though with significantly less bandwidth usage.
+The protocol is intended to be used in two ways, depending on the peers and bandwidth available, as discussed [[#implementation-notes|later]]. The "high-bandwidth" mode, which nodes may only enable for a few of their peers, is enabled by setting the first boolean to 1 in a <code>sendcmpct</code> message. In this mode, peers send new block announcements with the short transaction IDs already (via a <code>cmpctblock</code> message), possibly even before fully validating the block (as indicated by the grey box in the image above). In some cases no further round-trip is needed, and the receiver can reconstruct the block and process it as usual immediately. When some transactions were not available from local sources (ie mempool), a <code>getblocktxn</code>/<code>blocktxn</code> roundtrip is necessary, bringing the best-case latency to the same 1.5*RTT minimum time that nodes take today, though with significantly less bandwidth usage.
 
 The "low-bandwidth" mode is enabled by setting the first boolean to 0 in a <code>sendcmpct</code> message. In this mode, peers send new block announcements with the usual inv/headers announcements (as per BIP130, and after fully validating the block). The receiving peer may then request the block using a MSG_CMPCT_BLOCK <code>getdata</code> request, which will receive a response of the header and short transaction IDs. In some cases no further round-trip is needed, and the receiver can reconstruct the block and process it as usual, taking the same 1.5*RTT minimum time that nodes take today, though with significantly less bandwidth usage. When some transactions were not available from local sources (ie mempool), a <code>getblocktxn</code>/<code>blocktxn</code> roundtrip is necessary, bringing the latency to at least 2.5*RTT in this case, again with significantly less bandwidth usage than today. Because TCP often exhibits worse transfer latency for larger data sizes (as a multiple of RTT), total latency is expected to be reduced even when the full 2.5*RTT transfer mechanism is used.
 
@@ -195,7 +195,7 @@ Compact blocks version 2 is almost identical to version 1, but supports segregat
 
 # Note that this spec does not change the requirement that nodes only relay information about blocks which they have fully validated in response to GETDATA/GETHEADERS/GETBLOCKS/etc requests. Nodes which announce using CMPCTBLOCK message and then receive a request for associated block data SHOULD ensure that messages do not go unresponded to, and that the appropriate data is provided after the block has been validated, subject to standard message-response ordering requirements. Note that no requirement is added that the node respond to the request with the new block included in eg GETHEADERS or GETBLOCKS messages, but the node SHOULD re-announce the block using the associated announcement methods after validation has completed if it is not included in the original response. On the other hand, nodes SHOULD delay responding to GETDATA requests for the block until validation has completed, stalling all message processing for the associated peer. REJECT messages are not considered "responses" for the purpose of this section.
 
-# As a result of the above requirements, implementors may wish to consider the potential for the introduction of delays in responses while remote peers validate blocks, avoiding delay-causing requests where possible.
+# As a result of the above requirements, implementers may wish to consider the potential for the introduction of delays in responses while remote peers validate blocks, avoiding delay-causing requests where possible.
 
 ==Justification==
 
@@ -209,9 +209,9 @@ There are several design goals for the Short ID calculation:
 * '''Space''' cmpctblock messages are never optional in this protocol, and contain a short ID for each non-prefilled transaction in the block. Thus, the size of short IDs is directly proportional to the maximum bandwidth savings possible.
 * '''Collision resistance''' It should be hard for network participants to create transactions that cause collisions. If an attacker were able to cause such collisions, filling mempools (and, thus, blocks) with them would cause poor network propagation of new (or non-attacker, in the case of a miner) blocks.
 
-SipHash is a secure, fast, and simple 64-bit MAC designed for network traffic authentication and collision-resistant hash tables. We truncate the output from SipHash-2-4 to 48 bits (see next section) in order to minimize space. The resulting 48-bit hash is certainly not large enough to avoid intentionally created individual collisons, but by using the block hash as a key to SipHash, an attacker cannot predict what keys will be used once their transactions are actually included in a relayed block. We mix in a per-connection 64-bit nonce to obtain independent short IDs on every connection, so that even block creators cannot control where collisions occur, and random collisions only ever affect a small number of connections at any given time. The mixing is done using SHA256(block_header || nonce), which is slow compared to SipHash, but only done once per block. It also adds the ability for nodes to choose the nonce in a better than random way to minimize collisions, though that is not necessary for correct behaviour. Conversely, nodes can also abuse this ability to increase their ability to introduce collisions in the blocks they relay themselves. However, they can already cause more problems by simply refusing to relay blocks. That is inevitable, and this design only seeks to prevent network-wide misbehavior.
+SipHash is a secure, fast, and simple 64-bit MAC designed for network traffic authentication and collision-resistant hash tables. We truncate the output from SipHash-2-4 to 48 bits (see next section) in order to minimize space. The resulting 48-bit hash is certainly not large enough to avoid intentionally created individual collisions, but by using the block hash as a key to SipHash, an attacker cannot predict what keys will be used once their transactions are actually included in a relayed block. We mix in a per-connection 64-bit nonce to obtain independent short IDs on every connection, so that even block creators cannot control where collisions occur, and random collisions only ever affect a small number of connections at any given time. The mixing is done using SHA256(block_header || nonce), which is slow compared to SipHash, but only done once per block. It also adds the ability for nodes to choose the nonce in a better than random way to minimize collisions, though that is not necessary for correct behaviour. Conversely, nodes can also abuse this ability to increase their ability to introduce collisions in the blocks they relay themselves. However, they can already cause more problems by simply refusing to relay blocks. That is inevitable, and this design only seeks to prevent network-wide misbehavior.
 
-====Random collision probabilty====
+====Random collision probability====
 
 Thanks to the block-header-based SipHash keys, we can assume that the only collisions on links between honest nodes are random ones.
 

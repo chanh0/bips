@@ -2,7 +2,7 @@
 // 5 blocks and collision space sizes of 1-32 bits. Change the RPC cert path
 // and credentials to run on your system. The program assumes you're running
 // a btcd with cfilter support, which mainline btcd doesn't have; in order to
-// circumvent this assumption, comment out the if block that checks for
+// circumvent this assumption, comment out the if block that checks the
 // filter size of DefaultP.
 
 package main
@@ -13,7 +13,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -37,7 +36,7 @@ var (
 		{49291, "Tx pays to empty output script"},
 		{180480, "Tx spends from empty output script"},
 		{926485, "Duplicate pushdata 913bcc2be49cb534c20474c4dee1e9c4c317e7eb"},
-		{987876, "Coinbase tx has unparseable output script"},
+		{987876, "Coinbase tx has unparsable output script"},
 		{1263442, "Includes witness data"},
 		{1414221, "Empty data"},
 	}
@@ -164,7 +163,7 @@ func main() {
 
 	writerFile = writer
 
-	cert, err := ioutil.ReadFile(defaultBtcdRPCCertFile)
+	cert, err := os.ReadFile(defaultBtcdRPCCertFile)
 	if err != nil {
 		fmt.Println("Couldn't read RPC cert: ", err.Error())
 		return
@@ -193,7 +192,7 @@ func main() {
 
 		block, err := client.GetBlock(blockHash)
 		if err != nil {
-			fmt.Println("Couldn't get block hash: ", err.Error())
+			fmt.Println("Couldn't get block data: ", err.Error())
 			return
 		}
 
@@ -207,7 +206,7 @@ func main() {
 
 		prevOutputScripts, err := fetchPrevOutputScripts(client, block)
 		if err != nil {
-			fmt.Println("Couldn't fetch prev output scipts: ", err)
+			fmt.Println("Couldn't fetch prev output scripts: ", err)
 			return
 		}
 
@@ -223,7 +222,7 @@ func main() {
 		}
 
 		// We'll now ensure that we've constructed the same filter as
-		// the chain server we're fetching blocks form.
+		// the chain server we're fetching blocks from.
 		filter, err := client.GetCFilter(
 			blockHash, wire.GCSFilterRegular,
 		)
@@ -290,12 +289,10 @@ func main() {
 				fmt.Println("Error writing test case to output: ", err.Error())
 				return
 			}
+
+			testBlockIndex++
 		}
 
 		prevBasicHeader = basicHeader
-
-		if uint32(height) == testBlockHeights[testBlockIndex].height {
-			testBlockIndex++
-		}
 	}
 }

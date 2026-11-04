@@ -2,15 +2,12 @@
   BIP: 52
   Layer: Consensus (hard fork)
   Title: Durable, Low Energy Bitcoin PoW
-  Author: Michael Dubrovsky <mike+bip@powx.org>
-          Bogdan Penkovsky <bogdan+bip@powx.org>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0052
-  Status: Draft
-  Type: Standards Track
-  Created: 2021-05-13
-  License: BSD-2-Clause
-           OPL
+  Authors: Michael Dubrovsky <mike+bip@powx.org>
+           Bogdan Penkovsky <bogdan+bip@powx.org>
+  Status: Closed
+  Type: Specification
+  Assigned: 2021-05-13
+  License: BSD-2-Clause OR OPUBL-1.0
 </pre>
 
 
@@ -25,7 +22,7 @@ Bitcoin network cannot profitably mine Bitcoin even if they have the capital to
 invest in mining hardware. From a practical perspective, Bitcoin adoption by
 companies like Tesla (which recently rescinded its acceptance of Bitcoin as
 payment) has been hampered by its massive energy consumption and perceived
-environmental impact. 
+environmental impact.
 
 <img src="bip-0052/btc_energy-small.png"></img>
 
@@ -118,7 +115,7 @@ The HeavyHash is performed in three stages:
 
 # Keccak hash
 # Matrix-vector multiplication
-# Keccak of the result xorred with the hashed input
+# Keccak of the result xored with the hashed input
 
 Note that the most efficient matrix-vector multiplication is performed on a
 photonic miner. However, this linear algebra operation can be performed on any
@@ -137,7 +134,7 @@ x1 <- keccak(input)
 x2 <- reshape(x1, 64)
 
 // Perform a matrix-vector multiplication.
-// The result is 64-vector of 14-bit unsigned. 
+// The result is 64-vector of 14-bit unsigned.
 x3 <- vector_matrix_mult(x2, M)
 
 // Truncate all values to 4 most significant bits.
@@ -287,12 +284,14 @@ With significant progress in optical and analog matrix-vector-multiplication chi
 
 PoWx will also be publishing the designs of the current optical miner prototypes in the near term under an open-source hardware license.
 
+== Changelog ==
+
+* 2026-06-18:
+** Updated to Closed after the proposal has not made progress for several years and [https://groups.google.com/g/bitcoindev/c/Vrh7oED9b9Q/m/TrCEKRjNAAAJ attempts to contact the authors] did not succeed.
+
 == Acknowledgments ==
 
 We thank all the members of the Bitcoin community who have already given us feedback over the last several years as well as others in the optical computing community and beyond that have given their input.
-
-
-
 
 [1] M. Dubrovsky et al. Towards Optical Proof of Work, CES conference (2020) https://assets.pubpub.org/xi9h9rps/01581688887859.pdf
 

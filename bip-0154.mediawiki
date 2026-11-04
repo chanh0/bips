@@ -2,12 +2,10 @@
   BIP: 154
   Layer: Peer Services
   Title: Rate Limiting via peer specified challenges
-  Author: Karl-Johan Alm <karljohan-alm@garage.co.jp>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0154
-  Status: Withdrawn
-  Type: Standards Track
-  Created: 2017-04-12
+  Authors: Karl-Johan Alm <karljohan-alm@garage.co.jp>
+  Status: Closed
+  Type: Specification
+  Assigned: 2017-04-12
   License: BSD-2-Clause
 </pre>
 
@@ -71,7 +69,7 @@ solve the challenge and reconnect, or discard it and find a different peer (or w
 
 There are two POW identifiers currently. When a new identifier is introduced, it should be added with an increment of 1
 to the last identifier in the list. When an identifier is deprecated, its status should be changed to <code>Deprecated</code> but it should
-retain its place in the list indefinitely. 
+retain its place in the list indefinitely.
 
 {|class="wikitable"
 ! ID !! Algorithm Name !! Work !! Param size !! Solution size !! Provably Secure !! SPH Resistance !! Status
@@ -166,14 +164,14 @@ Solution format:
 Additional notes:
 
 * The initial nonce value used for finding a graph with a suitable solution should be randomized, or a challenger may deliberately pick a challenge with "poor" outcomes to fool a node into spending more than predicted time solving.
-* Further information on the recommended challenge parameters can be found here: http://bc-2.jp/cuckoo-profile.pdf
+* Further information on the recommended challenge parameters can be found here: https://web.archive.org/web/20230207054058/http://bc-2.jp/cuckoo-profile.pdf
 
 ===Purpose Identifiers===
 
 There is only one Purpose Identifier currently. In the future, more Purpose Identifiers could be added for at-DoS-risk operations,
 such as bloom filters. When a new identifier is introduced, it should be added with an increment of 1 to the last identifier in the
 list. When an identifier is deprecated, its status should be changed to <code>Deprecated</code> but it should retain its place in
-the list indefinitely. 
+the list indefinitely.
 
 {|class="wikitable"
 ! ID !! Purpose Name !! Description !! Status
@@ -236,7 +234,7 @@ Normally mid-layer (all but the last) POW algorithms have a zero-length input. E
 |-
 | 1..4 || pow-id || 1 || sha256
 |-
-| 5 || pow-params (config_length) || 9 || 
+| 5 || pow-params (config_length) || 9 ||
 |-
 | 6..9 || pow-params (target) || 0x207fffff || Resulting hash must be <= the compact hash 0x207fffff*
 |-
@@ -248,7 +246,7 @@ Normally mid-layer (all but the last) POW algorithms have a zero-length input. E
 |-
 | 19..22 || pow-id || 2 || cuckoo-cycle
 |-
-| 23 || pow-params (config_length) || 8 || 
+| 23 || pow-params (config_length) || 8 ||
 |-
 | 24 || pow-params (sizeshift) || 28
 |-

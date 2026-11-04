@@ -2,13 +2,11 @@
   BIP: 69
   Layer: Applications
   Title: Lexicographical Indexing of Transaction Inputs and Outputs
-  Author: Kristov Atlas <kristov@openbitcoinprivacyproject.org>
+  Authors: Kristov Atlas <kristov@openbitcoinprivacyproject.org>
   Editor: Daniel Cousens <bips@dcousens.com>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0069
-  Status: Proposed
+  Status: Complete
   Type: Informational
-  Created: 2015-06-12
+  Assigned: 2015-06-12
   License: PD
 </pre>
 
@@ -162,7 +160,7 @@ Outputs:
 * [[https://github.com/bitcoinjs/bip69/blob/master/test/fixtures.json|BitcoinJS Test Fixtures]]
 * [[https://www.npmjs.com/package/bip69|NodeJS]]
 * [[https://github.com/blockchain/My-Wallet-V3/blob/v3.8.0/src/transaction.js#L120-L142|Blockchain.info public beta]]
-* [[https://github.com/btcsuite/btcutil/blob/master/txsort/txsort.go|Btcsuite]]
+* [[https://github.com/btcsuite/btcd/blob/master/btcutil/txsort/txsort.go|Btcsuite]]
 
 ==Acknowledgements==
 

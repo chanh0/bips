@@ -1,6 +1,5 @@
 from typing import Tuple, Optional, Any
 import hashlib
-import binascii
 
 # Set DEBUG to True to get a detailed debug output including
 # intermediate values during key generation, signing, and
@@ -96,8 +95,6 @@ def pubkey_gen(seckey: bytes) -> bytes:
     return bytes_from_point(P)
 
 def schnorr_sign(msg: bytes, seckey: bytes, aux_rand: bytes) -> bytes:
-    if len(msg) != 32:
-        raise ValueError('The message must be a 32-byte array.')
     d0 = int_from_bytes(seckey)
     if not (1 <= d0 <= n - 1):
         raise ValueError('The secret key must be an integer in the range 1..n-1.')
@@ -121,8 +118,6 @@ def schnorr_sign(msg: bytes, seckey: bytes, aux_rand: bytes) -> bytes:
     return sig
 
 def schnorr_verify(msg: bytes, pubkey: bytes, sig: bytes) -> bool:
-    if len(msg) != 32:
-        raise ValueError('The message must be a 32-byte array.')
     if len(pubkey) != 32:
         raise ValueError('The public key must be a 32-byte array.')
     if len(sig) != 64:
@@ -167,6 +162,7 @@ def test_vectors() -> bool:
                     print(' * Failed key generation.')
                     print('   Expected key:', pubkey.hex().upper())
                     print('     Actual key:', pubkey_actual.hex().upper())
+                    all_passed = False
                 aux_rand = bytes.fromhex(aux_rand_hex)
                 try:
                     sig_actual = schnorr_sign(msg, seckey, aux_rand)

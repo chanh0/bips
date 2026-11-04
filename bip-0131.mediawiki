@@ -2,12 +2,10 @@
   BIP: 131
   Layer: Consensus (hard fork)
   Title: "Coalescing Transaction" Specification (wildcard inputs)
-  Author: Chris Priest <cp368202@ohiou.edu>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0131
-  Status: Rejected
-  Type: Standards Track
-  Created: 2015-11-30
+  Authors: Chris Priest <cp368202@ohiou.edu>
+  Status: Closed
+  Type: Specification
+  Assigned: 2015-11-30
   License: PD
 </pre>
 
@@ -59,7 +57,7 @@ inputs present in the transaction.
 A coalescing transaction is formulated the exact same way as a version 1 transaction
 with one exception: each input is treated as a "wildcard input".
 
-A wildcard input beings the value of all inputs with the exact same scriptPubKey
+A wildcard input being the value of all inputs with the exact same scriptPubKey
 in a block lower or equal to the block the wildcard input is confirmed into.
 
 == Changes needed to implement ==

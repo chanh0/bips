@@ -2,15 +2,12 @@
   BIP: 197
   Layer: Applications
   Title: Hashed Time-Locked Collateral Contract
-  Author: Matthew Black <matthew@atomicloans.io>
-          Tony Cai <tony@atomicloans.io>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0197
+  Authors: Matthew Black <matthew@atomicloans.io>
+           Tony Cai <tony@atomicloans.io>
   Status: Draft
-  Type: Standards Track
-  Created: 2019-03-19
-  License: BSD-3-Clause
-           CC0-1.0
+  Type: Specification
+  Assigned: 2019-03-19
+  License: BSD-3-Clause OR CC0-1.0
 </pre>
 
 ==Abstract==
@@ -79,7 +76,7 @@ The Seizable Collateral script takes the following form:
 
 ==Compatibility==
 
-BIP 197 is compatible with [ERC 1850](https://github.com/ethereum/EIPs/pull/1850) for [atomic loans](https://arxiv.org/pdf/1901.05117.pdf) with Ethereum. Can be extended in the future to be compatible with other HTLC and smart contract compatible chains.
+BIP 197 is compatible with [https://github.com/ethereum/EIPs/pull/1850 ERC 1850] for [https://arxiv.org/pdf/1901.05117.pdf atomic loans] with Ethereum. Can be extended in the future to be compatible with other HTLC and smart contract compatible chains.
 
 ==Motivation==
 
@@ -148,7 +145,7 @@ As this is a new standard for collateralized debt, there is no need for backward
 
 ==Implementation==
 
-https://github.com/AtomicLoans/chainabstractionlayer/blob/bitcoin-collateral-provider/src/providers/bitcoin/BitcoinCollateralProvider.js
+https://github.com/AtomicLoans/chainabstractionlayer/blob/dev/packages/bitcoin-collateral-provider/lib/BitcoinCollateralProvider.js
 
 ==Copyright==
 

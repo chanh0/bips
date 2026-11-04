@@ -2,12 +2,10 @@
   BIP: 114
   Layer: Consensus (soft fork)
   Title: Merkelized Abstract Syntax Tree
-  Author: Johnson Lau <jl2012@xbt.hk>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0114
-  Status: Rejected
-  Type: Standards Track
-  Created: 2016-04-02
+  Authors: Johnson Lau <jl2012@xbt.hk>
+  Status: Closed
+  Type: Specification
+  Assigned: 2016-04-02
   License: PD
 </pre>
 
@@ -111,7 +109,7 @@ The advantages of the current proposal are:
 * If different parties in a contract do not want to expose their scripts to each other, they may provide only <code>H(Subscript)</code> and keep the <code>Subscript</code> private until redemption.
 * If they are willing to share the actual scripts, they may combine them into one <code>Subscript</code> for each branch, saving some <code>nOpCount</code> and a few bytes of witness space.
 
-The are some disadvantages, but only when the redemption condition is very complicated:
+There are some disadvantages, but only when the redemption condition is very complicated:
 * It may require more branches than a general MAST design (as shown in the previous example) and take more witness space in redemption
 * Creation and storage of the MAST structure may take more time and space. However, such additional costs affect only the related parties in the contract but not any other Bitcoin users.
 
@@ -375,6 +373,10 @@ uint256 ComputeMerkleRootFromBranch(const uint256& leaf, const std::vector<uint2
 
 == References ==
 *[[bip-0141.mediawiki|BIP141 Segregated Witness (Consensus layer)]]
+
+== Footnotes ==
+
+<references/>
 
 == Copyright ==
 This document is placed in the public domain.

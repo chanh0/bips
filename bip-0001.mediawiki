@@ -1,13 +1,11 @@
 <pre>
   BIP: 1
   Title: BIP Purpose and Guidelines
-  Author: Amir Taaki <genjix@riseup.net>
-  Comments-Summary: No comments yet.
-  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0001
-  Status: Replaced
+  Authors: Amir Taaki <genjix@riseup.net>
+  Status: Closed
   Type: Process
-  Created: 2011-09-19
-  Superseded-By: 2
+  Assigned: 2011-09-19
+  Proposed-Replacement: 2
 </pre>
 
 ==What is a BIP?==
@@ -23,7 +21,7 @@ Because the BIPs are maintained as text files in a versioned repository, their r
 There are three kinds of BIP:
 
 * A Standards Track BIP describes any change that affects most or all Bitcoin implementations, such as a change to the network protocol, a change in block or transaction validity rules, or any change or addition that affects the interoperability of applications using Bitcoin.
-* An Informational BIP describes a Bitcoin design issue, or provides general guidelines or information to the Bitcoin community, but does not propose a new feature. Informational BIPs do not necessarily represent a Bitcoin community consensus or recommendation, so users and implementors are free to ignore Informational BIPs or follow their advice.
+* An Informational BIP describes a Bitcoin design issue, or provides general guidelines or information to the Bitcoin community, but does not propose a new feature. Informational BIPs do not necessarily represent a Bitcoin community consensus or recommendation, so users and implementers are free to ignore Informational BIPs or follow their advice.
 * A Process BIP describes a process surrounding Bitcoin, or proposes a change to (or an event in) a process. Process BIPs are like Standards Track BIPs but apply to areas other than the Bitcoin protocol itself. They may propose an implementation, but not to Bitcoin's codebase; they often require community consensus; unlike Informational BIPs, they are more than recommendations, and users are typically not free to ignore them. Examples include procedures, guidelines, changes to the decision-making process, and changes to the tools or environment used in Bitcoin development. Any meta-BIP is also considered a Process BIP.
 
 ==BIP Work Flow==
@@ -38,7 +36,7 @@ BIP authors are responsible for collecting community feedback on both the initia
 
 It is highly recommended that a single BIP contain a single key proposal or new idea. The more focused the BIP, the more successful it tends to be. If in doubt, split your BIP into several well-focused ones.
 
-The BIP editors assign BIP numbers and change their status. Please send all BIP-related email to the BIP editor, which is listed under [[#BIP_Editors|BIP Editors]] below. Also see [[#BIP_Editor_Responsibilities__Workflow|BIP Editor Responsibilities & Workflow]]. The BIP editor reserves the right to reject BIP proposals if they appear too unfocused or too broad.
+The BIP editors assign BIP numbers and change their status. Please send all BIP-related email to the BIP editor, which is listed under [[#bip-editors|BIP Editors]] below. Also see [[#bip-editor-responsibilities--workflow|BIP Editor Responsibilities & Workflow]]. The BIP editor reserves the right to reject BIP proposals if they appear too unfocused or too broad.
 
 Authors MUST NOT self assign BIP numbers, but should use an alias such as "bip-johndoe-infinitebitcoins" which includes the author's name/nick and the BIP subject.
 
@@ -179,6 +177,9 @@ This document was derived heavily from Python's PEP-0001. In many places text wa
 
 ==Changelog==
 
-10 Oct 2015 - Added clarifications about submission process and BIP number assignment.
-
-01 Jan 2016 - Clarified early stages of BIP idea championing, collecting community feedback, etc.
+* 2016-12-14:
+** Closed: [https://github.com/bitcoin/bips/pull/478 Superseded by BIP2]
+* 2016-01-01:
+** Clarified early stages of BIP idea championing, collecting community feedback, etc.
+* 2015-10-10:
+** Added clarifications about submission process and BIP number assignment.
